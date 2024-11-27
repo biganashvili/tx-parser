@@ -2,6 +2,7 @@
 
 After cloning the repository just run the command:
 ```
+git clone https://github.com/biganashvili/tx-parser.git
 cd ./tx-parser
 go run cmd/api/main.go
 ```
@@ -25,6 +26,8 @@ curl --location 'localhost:8080/transactions?address=0x28C6c06298d514Db089934071
 ```
 
 ## Disadvantages
-The parser is slow because it uses one goroutine.
-Tests not implemented
+- The parser is slow because it uses one goroutine.
+- Tests not implemented
+- Doesn't read variables from env
+- Logs needs to be improved
 
