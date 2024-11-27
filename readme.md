@@ -30,4 +30,5 @@ curl --location 'localhost:8080/transactions?address=0x28C6c06298d514Db089934071
 - Tests not implemented
 - Doesn't read variables from env
 - Logs needs to be improved
+- Parser can't identify transactions made by contacts
 
