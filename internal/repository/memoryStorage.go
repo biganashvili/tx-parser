@@ -9,23 +9,23 @@ import (
 // MemoryStorage is an in-memory storage for block-related data
 type MemoryStorage struct {
 	mu           sync.RWMutex
-	currentBlock int64           // Latest block number processed by the listener
-	subscribers  map[string]bool // Subscribed addresses
+	currentBlock int64
+	subscribers  map[string]bool
 	transactions map[string]map[string]model.Transaction
 }
 
-// NewMemoryStorage initializes an in-memory block storage
+// NewMemoryStorage initializes an in-memory storage
 func NewMemoryStorage() *MemoryStorage {
 	return &MemoryStorage{
 		transactions: make(map[string]map[string]model.Transaction),
 		subscribers:  make(map[string]bool),
-		currentBlock: 0, // Initialize to 0 or any appropriate value
+		currentBlock: 0,
 	}
 }
 
-// SaveBlock stores the block number for a given address
+// SaveBlock stores the current block number
 func (s *MemoryStorage) SaveBlock(blockNum int64) error {
-	s.mu.Lock() // Use lock to protect write access
+	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.currentBlock = blockNum
 	return nil
@@ -33,7 +33,7 @@ func (s *MemoryStorage) SaveBlock(blockNum int64) error {
 
 // GetCurrentBlock retrieves the latest block number
 func (s *MemoryStorage) GetCurrentBlock() (int64, error) {
-	s.mu.RLock() // Use read lock for thread-safe reading
+	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.currentBlock, nil
 }
@@ -49,14 +49,14 @@ func (s *MemoryStorage) SaveTransaction(address string, tx model.Transaction) er
 	return nil
 }
 
-// Get All Subscription
+// GetAllSubscriptions retrieves all observed addresses
 func (s *MemoryStorage) GetAllSubscriptions() (map[string]bool, error) {
 	return s.subscribers, nil
 }
 
 // GetTransactions retrieves all transactions for a given address
 func (s *MemoryStorage) GetTransactions(address string) ([]model.Transaction, error) {
-	s.mu.RLock() // Read lock for concurrent reads
+	s.mu.RLock()
 	defer s.mu.RUnlock()
 	res := []model.Transaction{}
 	for _, v := range s.transactions[address] {
@@ -68,7 +68,7 @@ func (s *MemoryStorage) GetTransactions(address string) ([]model.Transaction, er
 // Subscribe adds an address to the list of observed addresses
 func (s *MemoryStorage) Subscribe(address string) (bool, error) {
 	if _, exists := s.subscribers[strings.ToLower(address)]; !exists {
-		s.subscribers[strings.ToLower(address)] = true // Mark the address as subscribed
+		s.subscribers[strings.ToLower(address)] = true
 		return true, nil
 	}
 

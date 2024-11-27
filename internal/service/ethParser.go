@@ -29,14 +29,15 @@ func (ep *EthParser) Run(live bool) {
 	}
 
 	if err != nil {
-		log.Println(1, err)
+		log.Println(err)
+		ep.Run(live)
 	}
 
 	for {
 
 		block, err := ep.blockchain.GetBlockByNumber(currentBlockHeight)
 		if err != nil {
-			log.Println(2, err)
+			log.Println(err)
 			continue
 		}
 		if block.Number == "" {
@@ -47,16 +48,15 @@ func (ep *EthParser) Run(live bool) {
 
 		subscriptions, err := ep.storage.GetAllSubscriptions()
 		if err != nil {
-			log.Println(3, err)
+			log.Println(err)
 			continue
 		}
 		log.Println("processing block ", currentBlockHeight)
 		for _, tx := range block.Transactions {
-			// log.Println(tx)
 			if _, ok := subscriptions[tx.To]; ok {
 				err := ep.storage.SaveTransaction(tx.To, tx)
 				if err != nil {
-					log.Println(4, err)
+					log.Println(err)
 					continue
 				}
 			}
@@ -64,7 +64,7 @@ func (ep *EthParser) Run(live bool) {
 				log.Println("from ", tx.From, tx.Value)
 				err := ep.storage.SaveTransaction(tx.From, tx)
 				if err != nil {
-					log.Println(5, err)
+					log.Println(err)
 					continue
 				}
 			}
@@ -72,7 +72,7 @@ func (ep *EthParser) Run(live bool) {
 		}
 		err = ep.storage.SaveBlock(currentBlockHeight)
 		if err != nil {
-			log.Println(6, err)
+			log.Println(err)
 			continue
 		}
 		currentBlockHeight++

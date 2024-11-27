@@ -24,7 +24,7 @@ func (s *ApiService) Subscribe(address string) (bool, error) {
 	return s.storage.Subscribe(address)
 }
 
-// list of inbound or outbound transactions for an address
+// list of transactions for an address
 func (s *ApiService) GetTransactions(address string) ([]model.Transaction, error) {
 	return s.storage.GetTransactions(address)
 }

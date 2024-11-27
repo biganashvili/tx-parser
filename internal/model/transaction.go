@@ -1,6 +1,6 @@
 package model
 
-// Transaction represents an Ethereum transaction
+// Transaction Ethereum transaction
 type Transaction struct {
 	Hash  string `json:"hash"`
 	From  string `json:"from"`

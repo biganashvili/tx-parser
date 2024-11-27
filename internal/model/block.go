@@ -1,6 +1,6 @@
 package model
 
-// Block represents the structure of an Ethereum block
+// Block represents an Ethereum block
 type Block struct {
 	Number       string
 	Transactions []Transaction
